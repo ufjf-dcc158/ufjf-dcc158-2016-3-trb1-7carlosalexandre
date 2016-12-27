@@ -159,9 +159,9 @@ function xadrez1(req, res) {
 				res.write('<div class="row line-2">\n');			
 			}
 			for(i=0; i<8; i++){
-				if(linha == i && coluna == j){
+				if(linha-1 == j && coluna-1 == i){
 					res.write('\t<div id="' + ((8*j)+i) + '"> &#9816; </div>\n');
-				}else if(posicaoValida(linha, coluna, i, j)){
+				}else if(posicaoValida(linha-1, coluna-1, j, i)){
 					res.write('\t<div style="background-color:blue;" id="' + ((8*j)+i) + '"></div>\n');			
 				}else{
 					res.write('\t<div id="' + ((8*j)+i) + '"></div>\n');		
@@ -175,7 +175,7 @@ function xadrez1(req, res) {
 	res.end();
 }
 
-
+// Exercício 10
 function xadrez2(req, res) {
 	var dados = url.parse(req.url, true).query	
 	var linha = Number(dados.linha);
@@ -188,35 +188,30 @@ function xadrez2(req, res) {
 		res.writeHead(200, {"Content-Type": "text/plain"});
 		res.write("Linha e/ou coluna abaixo de 1 ou acima de 8. Tente novamente.");
 	}else{
-		var html = '';
-		res.writeHead(200, {"Content-Type": "application/json"});
-		var css = fs.readFileSync('xadrez.css', 'utf8');
-   		html += '<style>\n' + css + '\n</style>\n';
-		html += '<div id="containerFull">\n';
-		html += '<div id="container">\n';		
-
-		for(j=0; j<8; j++){
-			if(j%2 == 0){
-				html += '<div class="row line-1">\n';
-			}else{
-				html += '<div class="row line-2">\n';			
-			}
-			for(i=0; i<8; i++){
-				if(linha == i && coluna == j){
-					html += '\t<div id="' + ((8*j)+i) + '"> &#9816; </div>\n';
-				}else if(posicaoValida(linha, coluna, i, j)){
-					html += '\t<div style="background-color:blue;" id="' + ((8*j)+i) + '"></div>\n';			
-				}else{
-					html += '\t<div id="' + ((8*j)+i) + '"></div>\n';		
-				}
-			}
-			html += '</div>\n';	
+		
+		var tabuleiro = new Array(8);
+		for (var i = 0; i < 8; i++) {
+  			tabuleiro[i] = new Array(8);
 		}
-		html += '</div>\n';
-		html += '</div>\n';
+		
+		for(i=0; i<8; i++){
+			for(j=0; j<8; j++){
+				if(linha-1 == i && coluna-1 == j){
+					tabuleiro[i][j] = "C";
+				}else if(posicaoValida(linha-1, coluna-1, i, j)){
+					tabuleiro[i][j] = "X";
+				}else{
+					tabuleiro[i][j] = "_";		
+				}
+			}	
+		}
+		res.writeHead(200, {"Content-Type": "application/json"});
+		for(var i = 0; i < 8; i++){
+			res.write(JSON.stringify(tabuleiro[i]));
+			res.write("\n");
+		}
 	}
-	var json = himalaya.parse(html);
-	console.dir(json, {colors: true, depth: null});
+
 	res.end();
 }
 
