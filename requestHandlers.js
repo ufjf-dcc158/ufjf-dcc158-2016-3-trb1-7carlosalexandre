@@ -1,16 +1,17 @@
 var url = require("url");
+var http = require("http");
 var fs = require("fs");
 var qs = require("querystring");
 var himalaya = require('himalaya');
 
 function index(req, res) {
 	res.writeHead(200, {"Content-Type": "text/html"});
-	res.write('<a href="http://localhost:8888/sobre.html">Sobre</a><br/><br/>');
-	res.write('<a href="http://localhost:8888/aleatorios.html">Aleatorios</a><br/><br/>');
-	res.write('<a href="http://localhost:8888/primos.html">Primos</a><br/><br/>');
-	res.write('<a href="http://localhost:8888/equacao.html">Equacao</a><br/><br/>');
-	res.write('<a href="http://localhost:8888/xadrez.html">Xadrez (HTML)</a><br/><br/>');
-	res.write('<a href="http://localhost:8888/xadrez.json">Xadrez (JSON)</a><br/><br/>');
+	res.write('<a href="http://'+ req.headers.host +'/sobre.html">Sobre</a><br/><br/>');
+	res.write('<a href="http://'+ req.headers.host +'/aleatorios.html">Aleatorios</a><br/><br/>');
+	res.write('<a href="http://'+ req.headers.host +'/primos.html">Primos</a><br/><br/>');
+	res.write('<a href="http://'+ req.headers.host +'/equacao.html">Equacao</a><br/><br/>');
+	res.write('<a href="http://'+ req.headers.host +'/xadrez.html">Xadrez (HTML)</a><br/><br/>');
+	res.write('<a href="http://'+ req.headers.host +'/xadrez.json">Xadrez (JSON)</a><br/><br/>');
 	res.end();
 }
 
